@@ -18,7 +18,7 @@ elements:
 	boolean mstkruskal
 	boolean shortest
 relations:
-	r0: common(GPL)
+	r0:common(GPL)
 	r1:decomposition(GPL,[Gtp],[1,1])
 	r2:group(Gtp,[directed, undirected],[1,1])
 	r3:decomposition(GPL,[Weight],[0,1])

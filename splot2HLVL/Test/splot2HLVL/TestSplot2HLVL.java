@@ -10,50 +10,6 @@ import utils.ParsingParameters;
 
 public class TestSplot2HLVL {
 
-	private HashSet<String> getElements(String hlvl) {
-		HashSet<String> set = new HashSet<String>();
-		String[] splittedElements = new String[0];
-		if(hlvl.contains("relations:")) {
-			hlvl = hlvl.split("relations:")[0];
-		}
-		if(hlvl.contains("elements:")) {
-			hlvl = hlvl.split("elements:")[1];
-			splittedElements = hlvl.replaceAll("\\t", "").split("\\n");
-		}
-		
-		for(String el : splittedElements) {
-			el = el.trim();
-			if(!el.equals("")) {
-				set.add(el);
-			}
-		}
-
-		return set;
-	}
-	
-	private HashSet<String> getRelations(String hlvl) {
-		HashSet<String> set = new HashSet<String>();
-		String[] splittedElements = new String[0];
-		if(hlvl.contains("operations:")) {
-			hlvl = hlvl.split("operations:")[0];
-		}
-		if(hlvl.contains("relations:")) {
-			hlvl = hlvl.split("relations:")[1];
-			splittedElements = hlvl.replaceAll("\\t", "").split("\\n");
-		}
-		
-		for(String el : splittedElements) {
-			el = el.trim();
-			if(!el.equals("")) {
-				el = el.split(":")[1];
-				el = el.trim();
-				set.add(el);
-			}
-		}
-
-		return set;
-	}
-
 	@Test
 	public void testParse() {
 
@@ -75,16 +31,16 @@ public class TestSplot2HLVL {
 				+ "\tr19: expression(~mstkruskal OR ~shortest)\n" + "\tr20: expression(~mstprim OR ~shortest)\n"
 				+ "\tr21: expression(~cycle OR DFS)\n" + "operations:\n" + "validModel,numberOfConfigurations\n";
 
-		HashSet<String> elementsA = getElements(program);
-		HashSet<String> relationsA = getRelations(program);
-		
+		String splotPath = "test-data/SplotFiles/Splot_GLP.xml";
+		String HLVLPath = "test-data/HLVLFiles/";
+
 		// for all files in the folder
 		// First we create a parameters object
 		int i = 0;
 		ParsingParameters params = new ParsingParameters();
 
-		params.setInputPath("test-data/SplotFiles/Splot_GLP.xml");
-		params.setOutputPath("test-data/HLVLFiles/");
+		params.setInputPath(splotPath);
+		params.setOutputPath(HLVLPath);
 		params.setTargetName("test" + i);
 
 		// Now we create the parser object
@@ -97,12 +53,13 @@ public class TestSplot2HLVL {
 			e.printStackTrace();
 		}
 		String parsedProgram = parser.getProgram();
-		
-		HashSet<String> elementsParsed = getElements(parsedProgram);
-		HashSet<String> relationsParsed = getRelations(parsedProgram);
-		
-		assertEquals(elementsA, elementsParsed);
-		assertEquals(relationsA, relationsParsed);
+
+		String OriginalHLVLPath = "test-data/HLVLFiles/graph.hlvl";
+
+		Hlvl originalHlvl = new Hlvl(OriginalHLVLPath, true);
+		Hlvl parsedHlvl = new Hlvl(parsedProgram, false);
+
+		assertEquals(originalHlvl, parsedHlvl);
 
 	}
 
