@@ -1,4 +1,4 @@
-model  test0_generated
+model graph
 elements: 
 	boolean GPL
 	boolean Gtp
