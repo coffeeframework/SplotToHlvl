@@ -177,7 +177,7 @@ public class Splot2HlvlParser implements IHlvlParser {
 
 		if (node instanceof RootNode) {
 			// including the root to the relations
-			relations.append("\t" + factory.getCore(featureName));
+			relations.append("\t" + factory.getCommon(featureName));//Cambio?
 		}
 		// Solitaire Feature
 		else if (node instanceof SolitaireFeature) {
@@ -283,6 +283,12 @@ public class Splot2HlvlParser implements IHlvlParser {
 
 	public String getProgram() {
 		return hlvlProgram.toString();
+	}
+
+	@Override
+	public String parse(String data) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
