@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import constraints.BooleanVariable;
+import com.github.coffeeframework.basickhlvlpackage.DecompositionType;
+import com.github.coffeeframework.basickhlvlpackage.GroupType;
+import com.github.coffeeframework.basickhlvlpackage.HlvlBasicFactory;
+import com.github.coffeeframework.basickhlvlpackage.IHlvlParser;
+import com.github.coffeeframework.utils.FileUtils;
+import com.github.coffeeframework.utils.ParsingParameters;
 
+import constraints.BooleanVariable;
 import constraints.PropositionalFormula;
 import fm.FeatureGroup;
 import fm.FeatureModel;
@@ -14,13 +20,6 @@ import fm.FeatureTreeNode;
 import fm.RootNode;
 import fm.SolitaireFeature;
 import fm.XMLFeatureModel;
-import utils.FileUtils;
-import utils.ParsingParameters;
-import basicHLVLPackage.DecompositionType;
-import basicHLVLPackage.GroupType;
-import basicHLVLPackage.HlvlBasicFactory;
-import basicHLVLPackage.IHlvlParser;
-import basicHLVLPackage.HlvlBasicKeys;
 
 /**
  * This class parses splot models to HLVL. implements IHlvlParser, HlvlBasicKeys
@@ -30,7 +29,7 @@ import basicHLVLPackage.HlvlBasicKeys;
  * @version coffee V1 Jan 2019
  */
 
-public class Splot2HlvlParser implements IHlvlParser {
+public class Splot2HlvlParser extends HlvlBasicFactory {
 	/**
 	 * params is an object with the parsing parameters
 	 */
@@ -177,7 +176,7 @@ public class Splot2HlvlParser implements IHlvlParser {
 
 		if (node instanceof RootNode) {
 			// including the root to the relations
-			relations.append("\t" + factory.getCore(featureName));
+			relations.append("\t" + factory.getCommon(featureName));
 		}
 		// Solitaire Feature
 		else if (node instanceof SolitaireFeature) {

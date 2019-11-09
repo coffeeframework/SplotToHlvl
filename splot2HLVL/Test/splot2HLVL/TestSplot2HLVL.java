@@ -1,12 +1,13 @@
 package splot2HLVL;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashSet;
 
 import org.junit.Test;
 
-import utils.ParsingParameters;
+import com.github.coffeeframework.utils.ParsingParameters;
+
 
 public class TestSplot2HLVL {
 
