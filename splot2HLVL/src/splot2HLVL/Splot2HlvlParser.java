@@ -1,5 +1,9 @@
 package splot2HLVL;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -29,7 +33,7 @@ import fm.XMLFeatureModel;
  * @version coffee V1 Jan 2019
  */
 
-public class Splot2HlvlParser extends HlvlBasicFactory {
+public class Splot2HlvlParser implements IHlvlParser {
 	/**
 	 * params is an object with the parsing parameters
 	 */
@@ -59,7 +63,11 @@ public class Splot2HlvlParser extends HlvlBasicFactory {
 	 * @param params
 	 */
 	public Splot2HlvlParser(ParsingParameters params) {
+		this();
 		this.params = params;
+	}
+
+	public Splot2HlvlParser() {
 		hlvlProgram = new StringBuilder();
 		elements = new StringBuilder();
 		relations = new StringBuilder();
@@ -91,6 +99,7 @@ public class Splot2HlvlParser extends HlvlBasicFactory {
 
 	/**
 	 * Loads the elements and relations that exist in the feature model
+	 * 
 	 * @param featureModel The feature model that is represented in the splot file
 	 */
 	public void loadModelInformation(FeatureModel featureModel) {
@@ -114,7 +123,7 @@ public class Splot2HlvlParser extends HlvlBasicFactory {
 		hlvlProgram.append(factory.getRelationsLab());
 		hlvlProgram.append(relations.toString());
 		// including the basic operations
-		hlvlProgram.append(factory.getBasicOperationsBlock());
+//		hlvlProgram.append(factory.getBasicOperationsBlock());
 	}
 
 	/**
@@ -129,10 +138,36 @@ public class Splot2HlvlParser extends HlvlBasicFactory {
 
 	}
 
+	@Override
+	public String parse(String data) throws Exception {
+		File temp = createTempFile(data);
+		this.params = new ParsingParameters();
+		params.setTargetName("Auto");
+		params.setInputPath(temp.getAbsolutePath());
+		
+		FeatureModel featureModel = loadXmlModel();
+		loadModelInformation(featureModel);
+		writeHlvlProgram();
+		
+		
+		temp.delete();
+		// TODO Auto-generated method stub
+		return getProgram();
+	}
+	
+	private File createTempFile(String data) throws IOException {
+		File temp = File.createTempFile("tempModel", ".xml");
+		BufferedWriter bw = new BufferedWriter(new FileWriter(temp));
+	    bw.write(data);
+	    bw.close();
+	    return temp;
+	}
+
 	/**
 	 * Adds a feature group present in the model to the elements
+	 * 
 	 * @param node The feature group to be added
-	 * @param tab The number of tabs before the feature group
+	 * @param tab  The number of tabs before the feature group
 	 */
 	public void addFeatureGroup(FeatureGroup node, int tab) {
 		// getting the parent of the group
@@ -165,8 +200,10 @@ public class Splot2HlvlParser extends HlvlBasicFactory {
 
 	/**
 	 * Adds a feature present in the model to the elements
-	 * @param node The feature to be added. It must be a root node or a solitaire feature.
-	 * @param tab The number of tabs before the feature group
+	 * 
+	 * @param node The feature to be added. It must be a root node or a solitaire
+	 *             feature.
+	 * @param tab  The number of tabs before the feature group
 	 */
 	public void addFeature(FeatureTreeNode node, int tab) {
 
@@ -197,30 +234,33 @@ public class Splot2HlvlParser extends HlvlBasicFactory {
 	}
 
 	/**
-	 * Traverses a subtree of the Splot model using DFS, and adds its elements to the list
+	 * Traverses a subtree of the Splot model using DFS, and adds its elements to
+	 * the list
+	 * 
 	 * @param node The root of the subtree to be traversed
 	 * @param tab
 	 */
 	private void traverseDFS(FeatureTreeNode node, int tab) {
 
 		// Root Feature
-		if ( node instanceof RootNode ||  node instanceof SolitaireFeature ) {
+		if (node instanceof RootNode || node instanceof SolitaireFeature) {
 			addFeature(node, tab);
-			
+
 		}
 		// Feature Group
-		else if ( node instanceof FeatureGroup ) {
-			addFeatureGroup((FeatureGroup)node, tab);
+		else if (node instanceof FeatureGroup) {
+			addFeatureGroup((FeatureGroup) node, tab);
 		}
 
-		//recursive call for each child
-		for( int i = 0 ; i < node.getChildCount() ; i++ ) {
-			traverseDFS((FeatureTreeNode )node.getChildAt(i), tab+1);
+		// recursive call for each child
+		for (int i = 0; i < node.getChildCount(); i++) {
+			traverseDFS((FeatureTreeNode) node.getChildAt(i), tab + 1);
 		}
 	}
 
 	/**
 	 * Adds the constraints present in the feature model to the list of relations
+	 * 
 	 * @param featureModel The splot model with the constraints
 	 */
 	private void traverseConstraints(FeatureModel featureModel) {
@@ -259,8 +299,9 @@ public class Splot2HlvlParser extends HlvlBasicFactory {
 	}
 
 	/**
-	 * Method to formatting the name of an element in a valid name 
-	 * for hlvl (no spaces, no symbols, etc)
+	 * Method to formatting the name of an element in a valid name for hlvl (no
+	 * spaces, no symbols, etc)
+	 * 
 	 * @param name is the identifier of the element
 	 * @return a String with formatted name
 	 */
