@@ -10,91 +10,33 @@ import com.github.coffeeframework.utils.ParsingParameters;
 
 public class TestSplot2HLVL {
 
-	private HashSet<String> getElements(String hlvl) {
-		HashSet<String> set = new HashSet<String>();
-		String[] splittedElements = new String[0];
-		if (hlvl.contains("relations:")) {
-			hlvl = hlvl.split("relations:")[0];
-		}
-		if (hlvl.contains("elements:")) {
-			hlvl = hlvl.split("elements:")[1];
-			splittedElements = hlvl.replaceAll("\\t", "").split("\\n");
-		}
-
-		for (String el : splittedElements) {
-			el = el.trim();
-			if (!el.equals("")) {
-				set.add(el);
-			}
-		}
-
-		return set;
-	}
-
-	private HashSet<String> getRelations(String hlvl) {
-		HashSet<String> set = new HashSet<String>();
-		String[] splittedElements = new String[0];
-		if (hlvl.contains("operations:")) {
-			hlvl = hlvl.split("operations:")[0];
-		}
-		if (hlvl.contains("relations:")) {
-			hlvl = hlvl.split("relations:")[1];
-			splittedElements = hlvl.replaceAll("\\t", "").split("\\n");
-		}
-
-		for (String el : splittedElements) {
-			el = el.trim();
-			if (!el.equals("")) {
-				el = el.split(":")[1];
-				el = el.trim();
-				set.add(el);
-			}
-		}
-
-		return set;
+	@Test
+	public void testParseGraph() {
+		testParse("test-data/SplotFiles/Splot_GLP.xml", "test-data/HLVLFiles/graph.hlvl", 0);
 	}
 
 	@Test
-	public void testParse() {
+	public void testParsePhone() {
+		testParse("test-data/SplotFiles/MobilePhone.xml", "test-data/HLVLFiles/mobile_phone.hlvl", 1);
+	}
+	
+	@Test
+	public void testParseComputador() {
+		testParse("test-data/SplotFiles/Computador.xml", "test-data/HLVLFiles/computador.hlvl", 2);
+	}
+	
+	@Test
+	public void testParseSmartHome() {
+		testParse("test-data/SplotFiles/SmartHome.xml", "test-data/HLVLFiles/smart_home.hlvl", 3);
+	}
 
-		String program = "model  test0_generated\n" + "elements: \n" + "\tboolean GPL\n" + "\tboolean Gtp\n"
-				+ "\tboolean directed\n" + "\tboolean undirected\n" + "\tboolean Weight\n" + "\tboolean weighted\n"
-				+ "\tboolean unweighted\n" + "\tboolean Search\n" + "\tboolean BFS\n" + "\tboolean DFS\n"
-				+ "\tboolean Algorithms\n" + "\tboolean connected\n" + "\tboolean stronglyc\n" + "\tboolean cycle\n"
-				+ "\tboolean mstprim\n" + "\tboolean mstkruskal\n" + "\tboolean shortest\n" + "relations:\n"
-				+ "\tr0: common(GPL)\n" + 
-				"\tr1:decomposition(GPL,[Gtp],[1,1])\n" + 
-				"\tr2:group(Gtp,[directed, undirected],[1,1])\n" + 
-				"\tr3:decomposition(GPL,[Weight],[0,1])\n" + 
-				"\tr4:group(Weight,[weighted, unweighted],[1,1])\n" + 
-				"\tr5:decomposition(GPL,[Search],[0,1])\n" + 
-				"\tr6:group(Search,[BFS, DFS],[1,1])\n" + 
-				"\tr7:decomposition(GPL,[Algorithms],[1,1])\n" + 
-				"\tr8:group(Algorithms,[connected, stronglyc, cycle, mstprim, mstkruskal, shortest],[1,*])\n" + 
-				"\tr9:expression(~mstprim OR unweighted )\n" + 
-				"\tr10:expression(~stronglyc OR ~shortest )\n" + 
-				"\tr11:expression(~mstprim OR undirected )\n" + 
-				"\tr12:expression(~shortest OR directed )\n" + 
-				"\tr13:expression(~mstprim OR ~mstkruskal )\n" + 
-				"\tr14:expression(~mstkruskal OR unweighted )\n" + 
-				"\tr15:expression(~stronglyc OR undirected )\n" + 
-				"\tr16:expression(~connected OR ~stronglyc )\n" + 
-				"\tr17:expression(~connected OR Search )\n" + 
-				"\tr18:expression(~mstkruskal OR undirected )\n" + 
-				"\tr19:expression(~mstkruskal OR ~shortest )\n" + 
-				"\tr20:expression(~mstprim OR ~shortest )\n" + 
-				"\tr21:expression(~cycle OR DFS )";
+	private void testParse(String splotPath, String originalHLVLPath, int i) {
 
-		HashSet<String> elementsA = getElements(program);
-		HashSet<String> relationsA = getRelations(program);
-
-		// for all files in the folder
-		// First we create a parameters object
-		int i = 0;
+		String HLVLPath = "test-data/HLVLFiles/";
 		ParsingParameters params = new ParsingParameters();
 
-		params.setInputPath("test-data/SplotFiles/Splot_GLP.xml");
-		params.setOutputPath("test-data/HLVLFiles/");
+		params.setInputPath(splotPath);
+		params.setOutputPath(HLVLPath);
 		params.setTargetName("test" + i);
 
 		// Now we create the parser object
@@ -108,11 +50,10 @@ public class TestSplot2HLVL {
 		}
 		String parsedProgram = parser.getProgram();
 
-		HashSet<String> elementsParsed = getElements(parsedProgram);
-		HashSet<String> relationsParsed = getRelations(parsedProgram);
+		Hlvl originalHlvl = new Hlvl(originalHLVLPath, true);
+		Hlvl parsedHlvl = new Hlvl(parsedProgram, false);
 
-		assertEquals(elementsA, elementsParsed);
-		assertEquals(relationsA, relationsParsed);
+		assertEquals(originalHlvl, parsedHlvl);
 
 	}
 	

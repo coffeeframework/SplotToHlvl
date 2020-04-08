@@ -1,0 +1,24 @@
+model mobile_phone
+elements: 
+	boolean Mobile_Phone
+	boolean Calls
+	boolean GPS
+	boolean Screen
+	boolean Basic
+	boolean Colour
+	boolean High_resolution
+	boolean Media
+	boolean Camera
+	boolean MP3
+relations:
+	r0:common(Mobile_Phone)
+	r1:decomposition(Mobile_Phone,[Calls],[1,1])
+	r2:decomposition(Mobile_Phone,[GPS],[0,1])
+	r3:decomposition(Mobile_Phone,[Screen],[1,1])
+	r4:group(Screen,[Basic, Colour, High_resolution],[1,1])
+	r5:decomposition(Mobile_Phone,[Media],[0,1])
+	r6:group(Media,[Camera, MP3],[1,*])
+	r7:expression(~GPS OR ~Basic )
+	r8:expression(~Camera OR High_resolution )
+operations: 
+validModel,numberOfConfigurations

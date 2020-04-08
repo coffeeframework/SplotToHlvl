@@ -1,0 +1,42 @@
+model  test3_generated
+elements: 
+	boolean SmartHome
+	boolean Lighting
+	boolean ControlSystem
+	boolean CellPhone
+	boolean ControlPanel
+	boolean AntiMinustheftAlarm
+	boolean MoviePlayers
+	boolean HDTV42
+	boolean PCPlayer
+	boolean HDTV32
+	boolean Contents
+	boolean VideoOnDemand
+	boolean Digital_Media_Server
+	boolean Providers
+	boolean ProviderA
+	boolean ProviderB
+	boolean Cache
+	boolean Internet
+	boolean Ethernet
+	boolean 3G
+	boolean WifiMinusb
+	boolean WifiMinusn
+relations:
+	r0: common(SmartHome)
+	r1:decomposition(SmartHome,[Lighting],[1,1])
+	r2:decomposition(SmartHome,[ControlSystem],[1,1])
+	r3:group(ControlSystem,[CellPhone, ControlPanel],[1,*])
+	r4:decomposition(SmartHome,[AntiMinustheftAlarm],[0,1])
+	r5:decomposition(SmartHome,[MoviePlayers],[0,1])
+	r6:group(MoviePlayers,[HDTV42, PCPlayer, HDTV32],[1,*])
+	r7:decomposition(SmartHome,[Contents],[0,1])
+	r8:group(Contents,[VideoOnDemand, Digital_Media_Server],[1,*])
+	r9:decomposition(VideoOnDemand,[Providers],[1,1])
+	r10:group(Providers,[ProviderA, ProviderB],[1,*])
+	r11:decomposition(VideoOnDemand,[Cache],[0,1])
+	r12:decomposition(SmartHome,[Internet],[0,1])
+	r13:group(Internet,[Ethernet, 3G, WifiMinusb, WifiMinusn],[1,*])
+	r14:expression(~AntiMinustheftAlarm OR ControlPanel )
+	r15:expression(~VideoOnDemand OR Internet )
+

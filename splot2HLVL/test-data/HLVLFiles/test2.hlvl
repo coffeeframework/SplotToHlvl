@@ -1,0 +1,111 @@
+model  test2_generated
+elements: 
+	boolean Computador
+	boolean Tipo
+	boolean Servidor
+	boolean Personal
+	boolean Mesa
+	boolean Portatil
+	boolean Marca
+	boolean Dell
+	boolean Toshiba
+	boolean Lenovo
+	boolean Apple
+	boolean Clon
+	boolean SO
+	boolean Linux
+	boolean Fedora
+	boolean Red_Hat
+	boolean Apple
+	boolean Yosemite
+	boolean OS_X_Server
+	boolean Windows
+	boolean Windows_10
+	boolean Windows_Server
+	boolean CPU
+	boolean Procesador
+	boolean AMD
+	boolean Intel
+	boolean Memoria
+	boolean 4_GB
+	boolean 8_GB
+	boolean 16_GB
+	boolean 32_GB
+	boolean 64_GB
+	boolean Disco
+	boolean 500_GB
+	boolean 1_TB
+	boolean 2_TB
+	boolean 5_TB
+	boolean 10_TB
+	boolean Tarjeta_Grafica
+	boolean ATI
+	boolean NVIDIA
+	boolean Pantalla
+	boolean Tecnologia
+	boolean 3D
+	boolean 4K
+	boolean Size
+	boolean 14_Pulgadas
+	boolean 17_Pulgadas
+	boolean 24_Pulgadas
+	boolean Planta_de_poder
+relations:
+	r0: common(Computador)
+	r1:decomposition(Computador,[Tipo],[1,1])
+	r2:group(Tipo,[Servidor],[1,1])
+	r3:group(Tipo,[Personal],[1,1])
+	r4:group(Personal,[Mesa],[1,1])
+	r5:group(Personal,[Portatil],[1,1])
+	r6:decomposition(Computador,[Marca],[1,1])
+	r7:group(Marca,[Dell],[1,1])
+	r8:group(Marca,[Toshiba],[1,1])
+	r9:group(Marca,[Lenovo],[1,1])
+	r10:group(Marca,[Apple],[1,1])
+	r11:group(Marca,[Clon],[1,1])
+	r12:decomposition(Computador,[SO],[1,1])
+	r13:group(SO,[Linux],[1,1])
+	r14:group(Linux,[Fedora],[1,1])
+	r15:group(Linux,[Red_Hat],[1,1])
+	r16:group(SO,[Apple],[1,1])
+	r17:group(Apple,[Yosemite],[1,1])
+	r18:group(Apple,[OS_X_Server],[1,1])
+	r19:group(SO,[Windows],[1,1])
+	r20:group(Windows,[Windows_10],[1,1])
+	r21:group(Windows,[Windows_Server],[1,1])
+	r22:decomposition(Computador,[CPU],[1,1])
+	r23:decomposition(CPU,[Procesador],[1,1])
+	r24:group(Procesador,[AMD],[1,1])
+	r25:group(Procesador,[Intel],[1,1])
+	r26:decomposition(CPU,[Memoria],[1,1])
+	r27:group(Memoria,[4_GB],[1,1])
+	r28:group(Memoria,[8_GB],[1,1])
+	r29:group(Memoria,[16_GB],[1,1])
+	r30:group(Memoria,[32_GB],[1,1])
+	r31:group(Memoria,[64_GB],[1,1])
+	r32:decomposition(CPU,[Disco],[1,1])
+	r33:group(Disco,[500_GB],[1,1])
+	r34:group(Disco,[1_TB],[1,1])
+	r35:group(Disco,[2_TB],[1,1])
+	r36:group(Disco,[5_TB],[1,1])
+	r37:group(Disco,[10_TB],[1,1])
+	r38:decomposition(CPU,[Tarjeta_Grafica],[0,1])
+	r39:group(Tarjeta_Grafica,[ATI],[1,1])
+	r40:group(Tarjeta_Grafica,[NVIDIA],[1,1])
+	r41:decomposition(Computador,[Pantalla],[0,1])
+	r42:decomposition(Pantalla,[Tecnologia],[1,1])
+	r43:group(Tecnologia,[3D],[1,*])
+	r44:group(Tecnologia,[4K],[1,*])
+	r45:decomposition(Pantalla,[Size],[1,1])
+	r46:group(Size,[14_Pulgadas],[1,1])
+	r47:group(Size,[17_Pulgadas],[1,1])
+	r48:group(Size,[24_Pulgadas],[1,1])
+	r49:decomposition(Computador,[Planta_de_poder],[0,1])
+	r50:expression(~Windows_10 OR Personal )
+	r51:expression(~Windows_Server OR Servidor )
+	r52:expression(~Pantalla OR Portatil )
+	r53:expression(~Red_Hat OR Servidor )
+	r54:expression(~OS_X_Server OR Servidor )
+	r55:expression(~Fedora OR Personal )
+	r56:expression(~Yosemite OR Personal )
+
